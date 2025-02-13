@@ -1,0 +1,87 @@
+// 1. Write a Java program to calculate the square root of a number entered by the user. Use try-catch to handle invalid inputs (e.g., negative numbers or non-numeric values).                    2.Write a Java program to simulate an ATM withdrawal system. The program should:
+
+
+
+import java.util.Scanner;
+
+public class SquareRootCalculator {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        try {
+            System.out.print("Enter a number: ");
+            double num = scanner.nextDouble();
+
+            if (num < 0) {
+                throw new IllegalArgumentException("Square root of a negative number is not defined in real numbers.");
+            }
+
+            double result = Math.sqrt(num);
+            System.out.println("Square root: " + result);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Invalid input! Please enter a valid number.");
+        } finally {
+            scanner.close();
+        }
+    }
+}
+
+
+/* 2.Write a Java program to simulate an ATM withdrawal system. The program should:
+
+Ask the user to enter their PIN.
+Allow withdrawal if the PIN is correct and the balance is sufficient.
+Throw exceptions for invalid PIN or insufficient balance.
+Ensure the system always shows the remaining balance, even if an exception occurs.
+*/
+
+import java.util.Scanner;
+
+class InvalidPINException extends Exception {
+    public InvalidPINException(String message) {
+        super(message);
+    }
+}
+
+class InsufficientBalanceException extends Exception {
+    public InsufficientBalanceException(String message) {
+        super(message);
+    }
+}
+
+public class ATM {
+    private static final int PIN = 1871; // Set PIN for testing
+    private static double balance = 50000.0; // Initial balance
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        try {
+            System.out.print("Enter your PIN: ");
+            int enteredPin = scanner.nextInt();
+
+            if (enteredPin != PIN) {
+                throw new InvalidPINException("Incorrect PIN. Access denied.");
+            }
+
+            System.out.print("Enter amount to withdraw: ");
+            double amount = scanner.nextDouble();
+
+            if (amount > balance) {
+                throw new InsufficientBalanceException("Insufficient balance.");
+            }
+
+            balance -= amount;
+            System.out.println("Withdrawal successful! You withdrew: ₹" + amount);
+
+        } catch (InvalidPINException | InsufficientBalanceException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Invalid input! Please enter valid numeric values.");
+        } finally {
+            System.out.println("Remaining balance: ₹" + balance);
+            scanner.close();
+        }
+    }
+}
